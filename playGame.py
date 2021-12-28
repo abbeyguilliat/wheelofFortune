@@ -26,14 +26,14 @@ players = ['Player 1', 'Player 2', 'Player 3'];
 winnings = [0,0,0];   # players' total game earnings, does not reset
 banks = [0,0,0];      # players' round earnings, resets between rounds
 
-in_play = 0;
+in_play = 0;          # initial value determined in determine_order(), increments when a player's turn is terminated
 turn = in_play % 3;   # gives index for current player in_play
 already_guessed = []; 
 
+## functions
 def determine_order(order_list):
     first_turn = random.choices(order_list);
     first_turn = first_turn[0];
-    #print(first_turn, order_list);
     return(first_turn);
 
 def generate_puzzle(puzzle_list):
@@ -59,7 +59,6 @@ def spin_wheel():
             spin_value = ''.join(spin_value);
             if spin_value == 'Lose a Turn':
                 print("\nUh oh! You've land on 'Lose a Turn'. We'll move on to the next player.");
-                #in_play += 1;
                 return(0)
         
             elif spin_value == 'Bankrupt':
@@ -74,6 +73,7 @@ def spin_wheel():
         else:
             print("Please press 'Enter' to spin the wheel.");
 
+# this function transforms a word puzzle from a list to a string and prints out the string for players to view + solve
 def print_puzzle(puzzle_to_solve):
     temp = "";
     for i in puzzle_to_solve:
@@ -82,6 +82,7 @@ def print_puzzle(puzzle_to_solve):
     print(temp);
     return;
 
+# used in get_guess()
 def check_guess(guess,word_puzzle,puzzle_to_solve,spin_value):
     prize_multiplier = 0;
     if (guess.lower() in word_puzzle) == False:
@@ -111,6 +112,7 @@ def check_guess(guess,word_puzzle,puzzle_to_solve,spin_value):
         prize_multiplier = -1;
     return(prize_multiplier);
 
+# used in get_guess
 def buy_vowel(word_puzzle,puzzle_to_solve):
     for vowel in vowel_dict:
         if (vowel in already_guessed) == False:
@@ -143,9 +145,10 @@ def buy_vowel(word_puzzle,puzzle_to_solve):
             return(continue_turn);
     print("All vowels have already been bought.");
     return(1);
-    
+
+# used in get_guess    
 def solve_word(word_puzzle):
-    global in_round;
+    #global in_round;
     in_solve = True;
     while in_solve == True:
         solve_word = input("\n%s, would you like to try and solve the word? [y/n]: " % (players[turn]));
@@ -154,6 +157,7 @@ def solve_word(word_puzzle):
             if word_guess.lower() == ''.join(word_puzzle):
                 print("\nCongrats, %s! You've successfully guessed the word puzzle: '%s'. We'll move on to the next round." % (players[turn],word_guess.lower()));
                 max_bank = max(banks);
+                # if tie in main round, each player w/ max amount earns total
                 if banks.count(max_bank) > 1:
                     max_bank_index = [];
                     for i in range(0,len(banks)):
@@ -176,6 +180,8 @@ def solve_word(word_puzzle):
             print("Invalid input. Please respond with 'y' or 'n'.");
     return(continue_turn);
 
+# main function to run through player turns
+# if continue_turn == -1 then begin new round, if == 0 then begin new player turn, if > 0 then current player stays in play
 def get_guess(word_puzzle,puzzle_to_solve,spin_value):
     valid_guess = False;
     print_puzzle(puzzle_to_solve);
@@ -244,6 +250,7 @@ def guess_final_vowel():
             print("\nInvalid input. Please guess a vowel.");
     return(guess);
 
+## playing the game
 start_game = True;
 print("\n============================\nWelcome to Wheel of Fortune!\n============================")
 while start_game == True:
@@ -265,6 +272,7 @@ while start_game == True:
             already_guessed = [];
             banks = [0,0,0];
             in_round = True;
+            # first 2 main rounds
             if round_counter < 3:
                 if round_counter == 1:
                     in_play = round1;
@@ -291,6 +299,7 @@ while start_game == True:
                             elif continue_turn == -1:
                                 keep_guessing = False;
                                 in_round = False;
+            # final bonus round
             elif round_counter == 3:
                 max_winnings = max(winnings);
                 if winnings.count(max_winnings) > 1:
