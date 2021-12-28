@@ -17,9 +17,9 @@ for line in read_file:
 ## defining collections + variables
 wheel = ('Bankrupt', 'Bankrupt', 'Lose a Turn', '100', '150', '200', '250', '300', '300', '350', '400', '450', '500', '500', '550', '600', '650', '700', '750', '800', '850', '900');
 #practice_puzzles = ['go hang a salami i a lasagna hog','a beautiful bouquet of red roses for you','a leopard cannot change its spots'];
-vowel_dict = {'a','e','i','o','u'};
-consonant_dict = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'];
-final_round_list = {'r','s','t','l','n','e'};
+vowel_dict = ('a','e','i','o','u');
+consonant_dict = ('b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z');
+final_round_list = ('r','s','t','l','n','e');
 order_list = [0,1,2]; # used to determine player order at start of round
 
 players = ['Player 1', 'Player 2', 'Player 3'];
